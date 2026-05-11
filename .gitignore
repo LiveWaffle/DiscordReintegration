@@ -1,18 +1,43 @@
-.gradle
-.settings
-/.idea/
-/.vscode/
-/run/
-/build/
-/eclipse/
-.classpath
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
 .project
-/bin/
+.classpath
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.factorypath
+
+# Eclipse
+bin/
+.metadata/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Minecraft/Forge Development
+run/
+eclipse/
+libs/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Game Server Files
 /config/
 /crash-reports/
 /logs/
-options.txt
 /saves/
+options.txt
 usernamecache.json
 banned-ips.json
 banned-players.json
@@ -22,16 +47,16 @@ server.properties
 servers.dat
 usercache.json
 whitelist.json
-/out/
-*.iml
-*.ipr
-*.iws
+
+# Build Scripts
 *.bat
-*.DS_Store
 !gradlew.bat
-.factorypath
 addon.local.gradle
 addon.local.gradle.kts
 addon.late.local.gradle
 addon.late.local.gradle.kts
 layout.json
+
+# Local environment
+local.properties
+*.log
