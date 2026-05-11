@@ -36,6 +36,5 @@
 dependencies {
     //runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.69-GTNH:dev")
     shadowImplementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.13.1")
-    shadowImplementation("org.apache.httpcomponents:httpclient:4.5.14")
 
 }

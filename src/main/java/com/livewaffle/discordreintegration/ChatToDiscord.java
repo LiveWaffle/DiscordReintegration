@@ -1,16 +1,15 @@
 package com.livewaffle.discordreintegration;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AchievementEvent;
-
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -96,23 +95,27 @@ public class ChatToDiscord {
                 + "}]"
                 + "}";
 
-            CloseableHttpClient client = HttpClients.createDefault();
+            URL url = new URL("https://discord.com/api/v10/channels/" + MainConfigurations.ChannelID + "/messages");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bot " + MainConfigurations.BotToken);
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setDoOutput(true);
 
-            HttpPost post = new HttpPost(
-                "https://discord.com/api/v10/channels/" + MainConfigurations.ChannelID + "/messages");
+            byte[] out = json.getBytes(StandardCharsets.UTF_8);
+            conn.setFixedLengthStreamingMode(out.length);
+            conn.connect();
 
-            post.setHeader("Authorization", "Bot " + MainConfigurations.BotToken);
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(out);
+            }
 
-            post.setHeader("Content-Type", "application/json");
-
-            post.setEntity(new StringEntity(json));
-
-            CloseableHttpResponse response = client.execute(post);
+            int status = conn.getResponseCode();
+            String statusMessage = conn.getResponseMessage();
             System.out.println("Channel ID: [" + MainConfigurations.ChannelID + "]");
-            System.out.println("Discord Status: " + response.getStatusLine());
+            System.out.println("Discord Status: " + status + " " + statusMessage);
 
-            response.close();
-            client.close();
+            conn.disconnect();
 
         } catch (Exception e) {
             e.printStackTrace();
