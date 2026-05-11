@@ -1,6 +1,5 @@
-# <p align="center">
-	<img src="banner.png" alt="Banner" />
-</p>
+<img src="banner.png" alt="Banner" />
+
 
 # DiscordReintegration
 Discord Messages into GregTech!
