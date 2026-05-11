@@ -35,7 +35,7 @@ git clone https://github.com/LiveWaffle/DiscordReintegration.git
 #### Build the Mod
 ```./gradlew build```
 
-## Check [Releases](https://github.com/LiveWaffle/DiscordReintegration/releases) for precompiled
+## Check [Releases](https://github.com/LiveWaffle/DiscordReintegration/releases) for precompiled release
 
 ## Authors
 
