@@ -42,7 +42,10 @@ public class DiscordReintegrationMod {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container
                 .connectToServer(new DiscordToChat(), new java.net.URI("wss://gateway.discord.gg/?v=10&encoding=json"));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Mod.EventHandler

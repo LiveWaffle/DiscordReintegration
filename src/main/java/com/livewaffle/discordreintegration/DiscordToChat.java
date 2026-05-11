@@ -9,6 +9,7 @@ import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
+import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
 import net.minecraft.server.MinecraftServer;
@@ -30,6 +31,7 @@ public class DiscordToChat {
     public void onOpen(Session session) {
         this.session = session;
         DiscordToChat.instance = this;
+        System.out.println("Discord gateway connection opened");
     }
 
     @OnMessage
@@ -158,10 +160,12 @@ public class DiscordToChat {
     }
 
     @OnClose
-    public void onClose() {
+    public void onClose(Session session, CloseReason closeReason) {
         if (heartbeatTimer != null) heartbeatTimer.cancel();
     }
 
     @OnError
-    public void onError(Throwable e) {}
+    public void onError(Throwable e) {
+        e.printStackTrace();
+    }
 }

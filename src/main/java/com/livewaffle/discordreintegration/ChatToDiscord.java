@@ -98,7 +98,8 @@ public class ChatToDiscord {
             URL url = new URL("https://discord.com/api/v10/channels/" + MainConfigurations.ChannelID + "/messages");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization", "Bot " + MainConfigurations.BotToken);
+            String token = MainConfigurations.BotToken;
+            conn.setRequestProperty("Authorization", "Bot " + token);
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setDoOutput(true);
 
