@@ -10,7 +10,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -166,19 +165,6 @@ public class ChatToDiscord {
     }
 
     private void updateBotStatus() {
-        if (DiscordToChat.instance == null) return;
 
-        StringBuilder status = new StringBuilder();
-        int playerCount = MinecraftServer.getServer()
-            .getCurrentPlayerCount();
-
-        if (MainConfigurations.PlayerCount) {
-            status.append(playerCount)
-                .append(" players");
-        }
-
-        if (status.length() > 0) {
-            DiscordToChat.instance.updateBotStatus(status.toString());
-        }
     }
 }
