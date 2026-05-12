@@ -1,5 +1,7 @@
 package com.livewaffle.discordreintegration;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -97,15 +99,15 @@ public class ChatToDiscord {
 
             URL url = new URL("https://discord.com/api/v10/channels/" + MainConfigurations.ChannelID + "/messages");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            String token = MainConfigurations.BotToken;
-            conn.setRequestProperty("Authorization", "Bot " + token);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setDoOutput(true);
 
             byte[] out = json.getBytes(StandardCharsets.UTF_8);
-            conn.setFixedLengthStreamingMode(out.length);
-            conn.connect();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bot " + MainConfigurations.BotToken);
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setRequestProperty("Content-Length", String.valueOf(out.length));
+            conn.setRequestProperty("User-Agent", "DiscordReintegration/1.0");
+            conn.setDoOutput(true);
 
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(out);
@@ -117,8 +119,8 @@ public class ChatToDiscord {
             System.out.println("Discord Status: " + status + " " + statusMessage);
 
             if (status >= 400) {
-                java.io.BufferedReader reader = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
                 String line;
                 StringBuilder errorBody = new StringBuilder();
                 while ((line = reader.readLine()) != null) {
