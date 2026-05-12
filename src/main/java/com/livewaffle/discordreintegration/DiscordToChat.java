@@ -16,6 +16,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import org.glassfish.tyrus.client.ClientManager;
+
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -26,6 +28,18 @@ public class DiscordToChat {
     private Session session;
     private Timer heartbeatTimer;
     public static DiscordToChat instance;
+    public static boolean ReceivedHeartbeatACK;
+
+    public void closeSessions() {
+        try {
+            if (session.isOpen()) {
+                session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "Server is shutdown"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @OnOpen
     public void onOpen(Session session) {
@@ -41,6 +55,14 @@ public class DiscordToChat {
                 .getAsJsonObject();
             int op = json.get("op")
                 .getAsInt();
+
+            if (op == 7) {
+                closeSessions();
+                reconnectOnClose(session);
+            }
+            if (op == 11) {
+                ReceivedHeartbeatACK = true;
+            }
 
             if (op == 10) {
                 int interval = json.get("d")
@@ -143,20 +165,38 @@ public class DiscordToChat {
     }
 
     private void startHeartbeat(int interval) {
+        ReceivedHeartbeatACK = true;
         heartbeatTimer = new Timer();
         heartbeatTimer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
                 try {
+                    if (!ReceivedHeartbeatACK) {
+                        System.out.println("Missed Heartbeat? Attempting to recon");
+                        heartbeatTimer.cancel();
+                        closeSessions();
+                        reconnectOnClose(session);
+                    }
+                    ReceivedHeartbeatACK = false;
+
                     JsonObject hb = new JsonObject();
                     hb.addProperty("op", 1);
                     hb.add("d", JsonNull.INSTANCE);
                     session.getBasicRemote()
                         .sendText(hb.toString());
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 0, interval);
+
+        if (!ReceivedHeartbeatACK) {
+            reconnectOnClose(session);
+        } else {
+
+        }
+
     }
 
     @OnClose
@@ -167,5 +207,14 @@ public class DiscordToChat {
     @OnError
     public void onError(Throwable e) {
         e.printStackTrace();
+    }
+
+    public void reconnectOnClose(Session session) {
+        try {
+            ClientManager.createClient()
+                .connectToServer(new DiscordToChat(), new java.net.URI("wss://gateway.discord.gg/?v=10&encoding=json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

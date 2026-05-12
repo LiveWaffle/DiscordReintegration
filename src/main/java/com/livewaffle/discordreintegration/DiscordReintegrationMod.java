@@ -50,5 +50,6 @@ public class DiscordReintegrationMod {
     @Mod.EventHandler
     public void onServerClose(FMLServerStoppingEvent event) {
         ChatToDiscord.createEmbed("Server is Stopping!", "", 16711735, "");
+        DiscordToChat.instance.closeSessions();
     }
 }
