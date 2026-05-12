@@ -41,3 +41,10 @@ git clone https://github.com/LiveWaffle/DiscordReintegration.git
 
 * **Andrew** - [GitHub](https://github.com/LiveWaffle)
 
+# Tutorial
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=aUczrZWQsKo">
+    <img src="https://img.youtube.com/vi/aUczrZWQsKo/maxresdefault.jpg" alt="Tutorial Video" />
+  </a>
+</p>
+
