@@ -58,7 +58,7 @@ public class DiscordReintegrationMod {
 
     @Mod.EventHandler
     public void onServerStart(FMLServerStartedEvent event) {
-        if (!MainConfigurations.BotToken.isEmpty() && MainConfigurations.ChannelID.isEmpty()) {
+        if (!MainConfigurations.BotToken.isEmpty() && !MainConfigurations.ChannelID.isEmpty()) {
             ChatToDiscord.createEmbed("Server is Started!", "", 5763719, "");
             connectDiscordGateway();
         } else {
