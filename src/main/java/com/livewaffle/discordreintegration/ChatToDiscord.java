@@ -1,5 +1,7 @@
 package com.livewaffle.discordreintegration;
 
+import static java.lang.Math.round;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -7,23 +9,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import net.minecraft.client.main.Main;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AchievementEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import scala.Console;
-
-import static java.lang.Math.round;
 
 public class ChatToDiscord {
 
@@ -44,26 +39,31 @@ public class ChatToDiscord {
             updateBotStatus();
         }
     }
+
     @SubscribeEvent
     public void onExplosion(ExplosionEvent.Start event) {
         if (MainConfigurations.enableExplosions) {
             Explosion explosion = event.explosion;
             if (explosion.exploder != null) {
-                String causedBy = explosion.exploder.getClass().getName();
+                String causedBy = explosion.exploder.getClass()
+                    .getName();
                 createEmbed(
                     "Explosion Detected! \uD83E\uDDE8",
-                    "There was an Explosion caused by " + causedBy +
-                        "\\n **" +
-                        round(explosion.explosionX) + " " +
-                        round(explosion.explosionY) + " " +
-                        round(explosion.explosionZ) + "**",
+                    "There was an Explosion caused by " + causedBy
+                        + "\\n **"
+                        + round(explosion.explosionX)
+                        + " "
+                        + round(explosion.explosionY)
+                        + " "
+                        + round(explosion.explosionZ)
+                        + "**",
                     1752220,
-                    "5573d7046d6e08198390aa56c8f8678c16d4407af9f214bf0291f3c7db1f379a"
-                );
+                    "5573d7046d6e08198390aa56c8f8678c16d4407af9f214bf0291f3c7db1f379a");
             }
         }
 
     }
+
     @SubscribeEvent
     public void onPlayerDeath(LivingDeathEvent event) {
         String playerName = event.entityLiving.getCommandSenderName();
