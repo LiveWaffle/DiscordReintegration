@@ -1,9 +1,8 @@
 package com.livewaffle.discordreintegration;
 
-import javax.websocket.ContainerProvider;
-import javax.websocket.WebSocketContainer;
-
 import net.minecraftforge.common.MinecraftForge;
+
+import org.glassfish.tyrus.client.ClientManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -39,8 +38,7 @@ public class DiscordReintegrationMod {
 
     private void connectDiscordGateway() {
         try {
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container
+            ClientManager.createClient()
                 .connectToServer(new DiscordToChat(), new java.net.URI("wss://gateway.discord.gg/?v=10&encoding=json"));
         } catch (Exception e) {
             e.printStackTrace();

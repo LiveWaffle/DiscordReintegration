@@ -5,11 +5,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.websocket.ClientEndpoint;
+import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
-import javax.websocket.CloseReason;
 import javax.websocket.Session;
 
 import net.minecraft.server.MinecraftServer;
