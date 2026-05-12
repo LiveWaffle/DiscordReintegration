@@ -14,7 +14,8 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
     modid = DiscordReintegrationMod.MODID,
     name = "Discord Reintegration",
     acceptedMinecraftVersions = "[1.7.10]",
-    canBeDeactivated = true)
+    canBeDeactivated = true,
+    acceptableRemoteVersions = "*")
 public class DiscordReintegrationMod {
 
     @Mod.EventHandler

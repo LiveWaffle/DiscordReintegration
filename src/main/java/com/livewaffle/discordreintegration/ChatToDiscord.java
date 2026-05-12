@@ -116,6 +116,18 @@ public class ChatToDiscord {
             System.out.println("Channel ID: [" + MainConfigurations.ChannelID + "]");
             System.out.println("Discord Status: " + status + " " + statusMessage);
 
+            if (status >= 400) {
+                java.io.BufferedReader reader = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
+                String line;
+                StringBuilder errorBody = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    errorBody.append(line);
+                }
+                System.out.println("Discord Error Response: " + errorBody.toString());
+                reader.close();
+            }
+
             conn.disconnect();
 
         } catch (Exception e) {
