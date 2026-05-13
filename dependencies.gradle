@@ -38,5 +38,6 @@ dependencies {
     shadowImplementation("org.glassfish.tyrus.bundles:tyrus-standalone-client:1.13.1") {
         transitive = false
     }
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.482:dev")
 
 }

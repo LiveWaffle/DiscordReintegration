@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import org.glassfish.tyrus.client.ClientManager;
 
 public class SetupCommands extends CommandBase {
 
@@ -42,6 +43,15 @@ public class SetupCommands extends CommandBase {
                 if (args[1].length() < 50) {
                     sender.addChatMessage(new ChatComponentText("§c Invalid Discord Token"));
                     return;
+                }
+            }
+            if (args[0].equalsIgnoreCase("restart")) {
+                DiscordToChat.instance.closeSessions();
+                try {
+                    ClientManager.createClient()
+                        .connectToServer(new DiscordToChat(), new java.net.URI("wss://gateway.discord.gg/?v=10&encoding=json"));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
